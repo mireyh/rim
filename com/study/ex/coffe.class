@@ -1,0 +1,63 @@
+package coffe;
+
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class main {
+
+   public static void main(String[] args) throws InterruptedException {
+      SimpleDateFormat sdf = new SimpleDateFormat("dd");
+      Date date = null;
+      String dateFormat = null;
+      int today = 0;
+      Scanner sc = new Scanner(System.in);
+      Map<Integer,int[]> guest = new HashMap<Integer,int[]>();
+      int nu = 0;
+      while(true) {
+         System.out.println("0.a | 1.b | 2.c | 10.종료");
+         System.out.print("선택>> ");
+         int selectNo = sc.nextInt();
+         if(selectNo ==  10)
+            break;
+         date = new Date();
+         dateFormat = sdf.format(date);
+         today = Integer.parseInt(dateFormat);
+         if(!guest.containsKey(selectNo))
+            guest.put(selectNo,new int[]{0,0,0});//0가격데이터 1 날짜 데이터 2는 이름
+         if(guest.get(selectNo)[1] != today){
+            System.out.print("정수 입력>> ");
+            guest.get(selectNo)[0] += sc.nextInt(); //커피값 누적
+            nu += guest.get(selectNo)[0];
+            guest.get(selectNo)[1] = today; //날짜
+            guest.get(selectNo)[2] = selectNo; //이름
+         }
+      }
+      //정렬
+      int[] temp = {};
+      for(int i = 0; i<guest.size();i++){
+         for(int j = 0; j<guest.size() - i;j++){
+            if(guest.size() > j+1  && guest.get(j)[0] > guest.get(j+1)[0]){
+               temp = guest.get(j);
+               guest.put(j,guest.get(j+1));
+               guest.put(j+1,temp);
+            }
+         }
+      }
+      // a b c i포문이 한번 돌때마다 // 가장뒤에 큰값이 오게 되어있음
+      // 4000 3000 2000 3000 4000 2000 3000 2000 4000
+      // 3000 2000 4000 2000 3000 4000
+      // 알고리즘 버블소트
+
+      String name = null;
+      System.out.println("작은 숫자대로 정렬 결과: ");
+
+      System.out.println(guest.get(2)[2]+"의 누적금액은="+guest.get(2)[0]+"이고 결제할 차례입니다");
+      guest.get(2)[0] = guest.get(2)[0] + guest.get(2)[0] -  nu;
+      System.out.println(guest.get(2)[2]+"의 누적금액은="+guest.get(2)[0]+"입니다");
+//      for (int i = 0; i<guest.size();i++){
+//         name = guest.get(i)[2] == 0 ? "A" : guest.get(i)[2] == 1 ? "B" : "C";
+//         System.out.println(name+"의 누적금액은="+guest.get(i)[0]);
+//         System.out.println(name+"의 마지막 구매이력은="+guest.get(i)[1] + "일 입니다");
+//      }
+   }
+}
