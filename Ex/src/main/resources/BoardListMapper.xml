@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="study.service.BoardListMapper">
+
+	<!-- 관리자 로그인 -->
+	<select id="selectBoardList" parameterType="BoardListVo" resultType="BoardListVo">
+	<![CDATA[
+		SELECT A.*
+		FROM (
+			SELECT @ROWNUM:=@ROWNUM+1 AS idx
+				  ,bno
+				  ,title
+				  ,writer
+				  ,DATE_FORMAT(insert_time, '%Y.%m.%d') AS insert_time
+			FROM 
+				 test_board
+				,(SELECT @ROWNUM:=0) R
+			) A
+		ORDER BY idx DESC; 
+	]]>
+	</select>
+
+</mapper>
